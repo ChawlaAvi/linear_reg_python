@@ -40,12 +40,10 @@ def sawtooth(X):
     return Y
 
 def linear(X, W=0.3, b=2):
-    Y = [W*x+b + 0.2*np.random.random() for x in X]
-    return Y
+    return [W*x+b + 0.2*np.random.random() for x in X]
 
 def poly(X):
-    Y = [3*x**3-2*x**2+4 + 20*np.random.random() for x in X]
-    return Y
+    return [3*x**3-2*x**2+4 + 20*np.random.random() for x in X]
 
 
 def plot(TRAIN_LOSS, VAL_LOSS, W_LIST,

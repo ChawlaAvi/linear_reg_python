@@ -64,13 +64,7 @@ class linear_model:
 
         '''
 
-        ### YOUR CODE SHOULD BEGIN HERE ###
-        
-        y_pred = np.matmul(feat,self.W)
-    
-        ### YOUR CODE SHOULD END HERE ###
-        
-        return y_pred
+        return np.matmul(feat,self.W)
 
     def backward(self, y_actl, y_pred, feat):
         '''
@@ -123,16 +117,11 @@ class linear_model:
         '''
 
         ### YOUR CODE SHOULD BEGIN HERE ###
-        
+
         A = np.array((y_pred - y_actl),dtype=np.float128())
         A = A/(2*A.shape[0])
-        
-        scalar_LOSS = sum(A*A)
-        
 
-        ### YOUR CODE SHOULD END HERE ###
-
-        return scalar_LOSS
+        return sum(A*A)
 
     
 def calc_features(X, choice, param=5):
@@ -171,7 +160,7 @@ def calc_features(X, choice, param=5):
             b = np.array( [[1]]*x.shape[0] )
             a = (np.c_[x,b]).tolist()
             feat.append(a[0])
-            
+
             ### YOUR CODE SHOULD END HERE ###
 
         elif choice == 'poly':
@@ -193,10 +182,9 @@ def calc_features(X, choice, param=5):
             a = np.array(b)
             for i in range(param-1):
                 a = (np.c_[(x**(i+1)),a])
-                
-            for i in a:   
-                feat.append((i.tolist()))    
-            ### YOUR CODE SHOULD END HERE ###
+
+            feat.extend(i.tolist() for i in a)    
+                    ### YOUR CODE SHOULD END HERE ###
 
         elif choice == 'fourier':
 
@@ -221,49 +209,41 @@ def calc_features(X, choice, param=5):
             for i in range((param)):
                 a = (np.c_[ ( np.sin( x*(i+1) ) ) , a ] )
                 a = (np.c_[ ( np.cos( x*(i+1) ) ) , a ] )
-                
-            for i in a:   
-                feat.append((i.tolist()))
-                
-            
-            ### YOUR CODE SHOULD END HERE ###
 
-        
+            feat.extend(i.tolist() for i in a)            
+                    ### YOUR CODE SHOULD END HERE ###
+
+
         elif choice == 'your_own_features':
 
             # You can create your own features here
 
-            
+
             # E.g.: if x = np.array([[3],
             #                        [2]])
-     
+
             ### YOUR CODE SHOULD BEGIN HERE ###
 
-            
+
             b=[[50]]*x.shape[0]
             a = np.array(b)  # 50
             c= x*x    # x^2
             for i in range(param):
                 b = (np.c_[ ( 112*np.sin( x*(i+1) ) ) , b ] )
                 b = (np.c_[ ( 112*np.cos( x*(i+1) ) ) , b ] )
-                
-            
+
+
             a = (np.c_[c,b])
-            
-            
-                
-            for i in a:   
-                feat.append((i.tolist()))
-                
-            
-            
 
-            ### YOUR CODE SHOULD END HERE ###
 
-            
+
+            feat.extend(i.tolist() for i in a)
+                    ### YOUR CODE SHOULD END HERE ###
+
+
     ### ANY ADDITIONAL CODE SHOULD BEGIN HERE ###
 
-            
+
     ### CODE SHOULD END HERE ###
-    
+
     return np.array(feat,dtype=np.float128())
